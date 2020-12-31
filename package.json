@@ -1,1 +1,22 @@
-{}
+{
+  "name": "upnshort",
+  "version": "1.0.0",
+  "description": "A site for uploading files, with some extra funcionalities.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sevlak/upnshort.git"
+  },
+  "author": "sevla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sevlak/upnshort/issues"
+  },
+  "homepage": "https://github.com/Sevlak/upnshort#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
