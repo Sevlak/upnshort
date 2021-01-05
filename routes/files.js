@@ -15,18 +15,18 @@ streamCon.once('open', () =>{ //cria uma stream caso a conexao com o db for feit
     console.log('gfs feito')
 })
 
-
 fileRouter.get('/', (req, res) => {
     res.sendFile(process.cwd() + '/static/index.html')
 })
 
 fileRouter.post('/up', upload.single('arquivo'), (req, res) =>{
-    console.log(req.file)
+    //salva o arquivo no banco de dados
     let newFile = new UpFile({name: req.file.originalname, file_id: req.file.id})
     newFile.save()
 
+    //cria o timeout de 5 minutos
     setTimeout(() => {
-        //deleta do database
+        //deleta da database
         UpFile.remove({name: req.file.originalname}, (err) => {
             console.log(err)
         })
@@ -36,7 +36,18 @@ fileRouter.post('/up', upload.single('arquivo'), (req, res) =>{
         gfs.delete(file_id, (err) => {
             console.log(err)
         })
-    }, 5000)
+    }, 300000)
+
+
+    res.status(200).send(`Seu link é <a href="http://localhost:3030/down/${req.file.id}">esse</a>. Boa sorte.`)
+})
+
+//baixar o arquivo
+//todo: arrumar como fica o nome do arquivo
+fileRouter.get('/down/:id', (req, res) => {
+    UpFile.findOne({file_id: req.params.id}, (err, document) => {
+        gfs.openDownloadStreamByName(document.name).pipe(res)  
+    })
 })
 
 module.exports = fileRouter
